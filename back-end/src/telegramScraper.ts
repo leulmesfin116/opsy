@@ -43,25 +43,56 @@ const stringSession = new StringSession(sessionString);
   const targetChannels: string[] = []; 
   // ---------------------
 
+  // --- PARSING LOGIC ---
+  const parseMessage = (message: any, chat: any) => {
+    const rawText = message.text || "";
+    const cleanText = rawText.trim();
+    
+    // Extract Links (Telegram stores these in 'entities')
+    const links: string[] = [];
+    if (message.entities) {
+      for (const entity of message.entities) {
+        if (entity.className === 'MessageEntityTextUrl') {
+          links.push(entity.url);
+        } else if (entity.className === 'MessageEntityUrl') {
+          const offset = entity.offset;
+          const length = entity.length;
+          links.push(rawText.substring(offset, offset + length));
+        }
+      }
+    }
+
+    return {
+      content: cleanText,
+      searchableText: cleanText.toLowerCase(),
+      links,
+      source: (chat as any)?.title || "Unknown Channel",
+      sourceId: message.chatId?.toString(),
+      msgId: message.id,
+      date: new Date(message.date * 1000)
+    };
+  };
+
   console.log("Listening for incoming messages...");
 
   // Handle incoming messages from channels
   client.addEventHandler(async (event) => {
     const message = event.message;
-    
-    // Get chat info (Channels are a type of Chat)
     const chat = await message.getChat();
-    const channelTitle = (chat as any)?.title || "Unknown Channel";
-
-    console.log(`\n--- New Channel Post ---`);
-    console.log(`Channel: ${channelTitle} (ID: ${message.chatId})`);
-    console.log(`Date: ${new Date(message.date * 1000).toLocaleString()}`);
-    console.log(`Message: ${message.text}`);
     
-    // Check if there are any media/files
-    if (message.media) {
-        console.log(`Attachment: [Media present]`);
+    // Use the parser
+    const parsedData = parseMessage(message, chat);
+
+    console.log(`\n--- Parsed Channel Post ---`);
+    console.log(`Channel: ${parsedData.source}`);
+    console.log(`Date: ${parsedData.date.toLocaleString()}`);
+    console.log(`Content: ${parsedData.content.substring(0, 100)}...`);
+    if (parsedData.links.length > 0) {
+        console.log(`Links found: ${parsedData.links.join(", ")}`);
     }
+    
+    // TODO: Phase 3.3 - Trigger Keyword Matching Engine
+    // matchKeywords(parsedData);
 
   }, new NewMessage({ chats: targetChannels.length > 0 ? targetChannels : undefined }));
 })();
