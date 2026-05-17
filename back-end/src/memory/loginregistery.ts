@@ -3,4 +3,6 @@ interface User {
   client: TelegramClient;
   phoneCodeHash: string;
 }
-const activeLogins = new Map<string, User>();
+class loginregistery {
+  private activeLogins = new Map<string, User>();
+}
