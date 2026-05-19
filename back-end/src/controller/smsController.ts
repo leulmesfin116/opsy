@@ -13,10 +13,13 @@ export const requestCodecontroller = async (req: Request, res: Response) => {
       connectionRetries: 5,
     });
     await client.connect();
-   const code = await client.sendCode({
-    apiId,
-    apiHash;
-   })
+    const { phoneCodeHash } = await client.sendCode(
+      {
+        apiId: apiId,
+        apiHash: apiHash,
+      },
+      number,
+    );
   } catch (error) {
     res.status(501).json({ message: "something went wrong" });
   }
