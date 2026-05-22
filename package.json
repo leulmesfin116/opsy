@@ -12,6 +12,7 @@
   "description": "",
   "dependencies": {
     "@prisma/client": "^7.8.0",
+    "@supabase/supabase-js": "^2.106.1",
     "bcrypt": "^6.0.0",
     "express": "^5.2.1",
     "input": "^1.0.1",

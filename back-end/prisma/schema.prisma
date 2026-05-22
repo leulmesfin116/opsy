@@ -11,4 +11,6 @@ generator client {
 datasource db {
   provider = "postgresql"
 }
- 
+ model telegramchannel{
+  id   String  @id @default(uuid)
+ }
