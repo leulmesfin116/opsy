@@ -8,6 +8,26 @@ const apiId = parseInt(process.env.TELEGRAM_API_ID || "0", 10);
 const apiHash = process.env.TELEGRAM_API_HASH || "";
 const sessionString = process.env.TELEGRAM_SESSION || ""; // Save this to .env after first login
 
+// key words
+const keyword = [
+  "hiring",
+  "developer",
+  "fullstack",
+  "frontend",
+  "backend",
+  "softwaredeveloper",
+  "graphic designer",
+  "video editor",
+  "animator",
+  "ui/ux",
+  "marketing",
+  "sales",
+  "social media",
+  "manager",
+  "content creator",
+  "advertisement",
+];
+
 const stringSession = new StringSession(sessionString);
 
 (async () => {
@@ -80,13 +100,11 @@ const stringSession = new StringSession(sessionString);
 
   console.log("Listening for incoming messages...");
 
-  // Handle incoming messages from channels
   client.addEventHandler(
     async (event) => {
       const message = event.message;
       const chat = await message.getChat();
 
-      // Use the parser
       const parsedData = parseMessage(message, chat);
 
       console.log(`\n--- Parsed Channel Post ---`);
@@ -96,9 +114,6 @@ const stringSession = new StringSession(sessionString);
       if (parsedData.links.length > 0) {
         console.log(`Links found: ${parsedData.links.join(", ")}`);
       }
-
-      // TODO: Phase 3.3 - Trigger Keyword Matching Engine
-      // matchKeywords(parsedData);
     },
     new NewMessage({
       chats: targetChannels.length > 0 ? targetChannels : undefined,
