@@ -19,7 +19,7 @@ const remote = [
 ];
 const onsite = [
   "onsite",
-  "on-site",
+  "on site",
   " office",
   "in-office",
   "in-person",
@@ -108,6 +108,30 @@ const targetChannels = [
       normalizedText = normalizedText.replace(/\s+/g, " ");
       console.log(`\n[New Message from Tracked Channel ${channelId}]:`);
       console.log(normalizedText);
+      // checking if one word passes from the array
+      const isRemote = remote.some((keyword) =>
+        normalizedText.includes(keyword.trim().toLocaleLowerCase()),
+      );
+      const isOnsite = onsite.some((keyword) =>
+        normalizedText.includes(keyword.trim().toLocaleLowerCase()),
+      );
+      const isHybrid = hybrid.some((keyword) =>
+        normalizedText.includes(keyword.trim().toLocaleLowerCase()),
+      );
+
+      const matchedCategories: string[] = [];
+      if (isRemote) matchedCategories.push("remote");
+      if (isOnsite) matchedCategories.push("onsite");
+      if (isHybrid) matchedCategories.push("hybrid");
+      if (matchedCategories.length > 0) {
+        console.log(
+          `🎯 Match Found! Categories: ${matchedCategories.join(", ")}`,
+        );
+      } else {
+        console.log(
+          "⏭️ No matching workplace keywords found. Skipping notification pipeline.",
+        );
+      }
     }
   }, new NewMessage({}));
 })();
