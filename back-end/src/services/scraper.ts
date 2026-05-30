@@ -103,8 +103,11 @@ const targetChannels = [
     // Only process if it comes from one of our target channels
     if (resolvedIds.includes(channelId)) {
       const text = message.message || "";
+      let normalizedText = text.toLowerCase();
+      normalizedText = normalizedText.replace(/[-/.,!]/g, " ");
+      normalizedText = normalizedText.replace(/\s+/g, " ");
       console.log(`\n[New Message from Tracked Channel ${channelId}]:`);
-      console.log(text);
+      console.log(normalizedText);
     }
   }, new NewMessage({}));
 })();
