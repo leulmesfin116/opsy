@@ -46,7 +46,7 @@ const targetChannels = [
   "@ethiojobsofficial",
 ];
 
-// FIX 1: Turned this into an Immediately Invoked Function Expression (IIFE)
+//  Turned this into an Immediately Invoked Function Expression (IIFE)
 (async () => {
   // Initialize with an empty session to force the login prompt
   const stringSession = new StringSession("");
@@ -55,7 +55,7 @@ const targetChannels = [
     connectionRetries: 5,
   });
 
-  // 2. Start the interactive login flow
+  //  Start the interactive login flow
   await client.start({
     phoneNumber: async () => await input.text("Please enter your number: "),
     password: async () =>
@@ -96,7 +96,8 @@ const targetChannels = [
     if (!message || !message.peerId) return;
 
     // Get the source channel ID
-    // @ts-ignore
+
+    if (!("channelId" in message.peerId)) return;
     const channelId = message.peerId.channelId?.toString();
 
     // Only process if it comes from one of our target channels
