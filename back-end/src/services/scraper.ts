@@ -105,8 +105,6 @@ const targetChannels = [
       const text = message.message || "";
       console.log(`\n[New Message from Tracked Channel ${channelId}]:`);
       console.log(text);
-
-      // NEXT STEP: Your keyword matching engine will analyze 'text' here!
     }
-  }, new NewMessage({})); // Listens for incoming messages globally
-})(); // FIX 1: Added invocation brackets here
+  }, new NewMessage({}));
+})();
