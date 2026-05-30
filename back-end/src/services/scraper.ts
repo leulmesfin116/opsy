@@ -125,11 +125,11 @@ const targetChannels = [
       if (isHybrid) matchedCategories.push("hybrid");
       if (matchedCategories.length > 0) {
         console.log(
-          `🎯 Match Found! Categories: ${matchedCategories.join(", ")}`,
+          ` Match Found! Categories: ${matchedCategories.join(", ")}`,
         );
       } else {
         console.log(
-          "⏭️ No matching workplace keywords found. Skipping notification pipeline.",
+          "⏭ No matching workplace keywords found. Skipping notification pipeline.",
         );
       }
     }
