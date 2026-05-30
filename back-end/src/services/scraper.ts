@@ -6,9 +6,8 @@ import input from "input";
 
 const apiId = parseInt(process.env.TELEGRAM_API_ID || "0", 10);
 const apiHash = process.env.TELEGRAM_API_HASH || "";
-const sessionString = process.env.TELEGRAM_SESSION || ""; // Save this to .env after first login
 
-// key words
+// Keywords for matching logic later
 const remote = [
   "remote",
   "wfh",
@@ -34,4 +33,79 @@ const hybrid = [
   "days a week in office",
   "remote option",
 ];
-const stringSession = new StringSession(sessionString);
+
+// Target channels
+const targetChannels = [
+  "@Maroset",
+  "@freelance_ethio",
+  "@effoyjobs",
+  "@josad_software",
+  "@hahujobs",
+  "@zemenaycommunity",
+  "@digitaljobs_et",
+  "@ethiojobsofficial",
+];
+
+// FIX 1: Turned this into an Immediately Invoked Function Expression (IIFE)
+(async () => {
+  // Initialize with an empty session to force the login prompt
+  const stringSession = new StringSession("");
+
+  const client = new TelegramClient(stringSession, apiId, apiHash, {
+    connectionRetries: 5,
+  });
+
+  // 2. Start the interactive login flow
+  await client.start({
+    phoneNumber: async () => await input.text("Please enter your number: "),
+    password: async () =>
+      await input.text("Please enter your password (if 2FA active): "),
+    phoneCode: async () =>
+      await input.text("Please enter the code you received: "),
+    onError: (err) => console.error("Login Error:", err),
+  });
+
+  console.log("\n--- LOGIN SUCCESSFUL ---");
+  console.log(
+    "Copy this string and save it in your .env file as TELEGRAM_SESSION_STRING:\n",
+  );
+  console.log(stringSession.save()); // <--- THIS IS YOUR KEY
+  console.log("\n------------------------\n");
+
+  console.log("Resolving target channels...");
+
+  // Resolve the string usernames to actual Entity IDs so GramJS can track them
+  const resolvedIds: string[] = [];
+  for (const channel of targetChannels) {
+    try {
+      const entity = await client.getEntity(channel);
+      resolvedIds.push(entity.id.toString());
+    } catch (e) {
+      console.error(`Could not resolve entity for username: ${channel}`);
+    }
+  }
+
+  console.log(
+    "Actively listening for jobs on resolved channel IDs:",
+    resolvedIds,
+  );
+
+  // FIX 3: Added the actual event listener using the NewMessage event class
+  client.addEventHandler(async (event) => {
+    const message = event.message;
+    if (!message || !message.peerId) return;
+
+    // Get the source channel ID
+    // @ts-ignore
+    const channelId = message.peerId.channelId?.toString();
+
+    // Only process if it comes from one of our target channels
+    if (resolvedIds.includes(channelId)) {
+      const text = message.message || "";
+      console.log(`\n[New Message from Tracked Channel ${channelId}]:`);
+      console.log(text);
+
+      // NEXT STEP: Your keyword matching engine will analyze 'text' here!
+    }
+  }, new NewMessage({})); // Listens for incoming messages globally
+})(); // FIX 1: Added invocation brackets here
