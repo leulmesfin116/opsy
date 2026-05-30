@@ -90,7 +90,7 @@ const targetChannels = [
     resolvedIds,
   );
 
-  // FIX 3: Added the actual event listener using the NewMessage event class
+  //  Added the actual event listener using the NewMessage event class
   client.addEventHandler(async (event) => {
     const message = event.message;
     if (!message || !message.peerId) return;
@@ -129,7 +129,7 @@ const targetChannels = [
         );
       } else {
         console.log(
-          "⏭ No matching workplace keywords found. Skipping notification pipeline.",
+          " No matching workplace keywords found. Skipping notification pipeline.",
         );
       }
     }
