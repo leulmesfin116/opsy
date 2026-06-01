@@ -21,7 +21,6 @@ export const handleIncomingJob = async (payload: IncomingJobPayload) => {
       ` Job ${messageId} from channel ${channelId} already processed. Skipping.`,
     );
 
-  //  Mark as processed immediately so rapid edits don't trigger duplicates
   const { error: insertError } = await supabase
     .from("processed_jobs")
     .insert([{ message_id: messageId, channel_id: channelId }]);
@@ -32,11 +31,9 @@ export const handleIncomingJob = async (payload: IncomingJobPayload) => {
   console.log(
     `new job registered successfully. Moving to keyword matching logic...`,
   );
-  // 1. Clean the text (lowercase, remove punctuation, fix spaces)
   let normalizedText = rawText.toLowerCase();
   normalizedText = normalizedText.replace(/[-/.,!]/g, " ").replace(/\s+/g, " ");
 
-  // 2. Define workplace keyword arrays
   const remoteKeywords = [
     "remote",
     "wfh",
@@ -53,7 +50,6 @@ export const handleIncomingJob = async (payload: IncomingJobPayload) => {
   ];
   const hybridKeywords = ["hybrid", "partially remote", "flexible arrangement"];
 
-  // 3. Check which keywords match
   const isRemote = remoteKeywords.some((k) => normalizedText.includes(k));
   const isOnsite = onsiteKeywords.some((k) => normalizedText.includes(k));
   const isHybrid = hybridKeywords.some((k) => normalizedText.includes(k));
@@ -63,15 +59,12 @@ export const handleIncomingJob = async (payload: IncomingJobPayload) => {
   if (isOnsite) matchedWorkplaces.push("onsite");
   if (isHybrid) matchedWorkplaces.push("hybrid");
 
-  // If no workplace keywords match, skip the post completely
   if (matchedWorkplaces.length === 0) {
     console.log(
-      `⏭️ Job ${messageId} ignored: No workplace type (remote/onsite/hybrid) found.`,
+      `Job ${messageId} ignored: No workplace type (remote/onsite/hybrid) found.`,
     );
     return;
   }
-
-  //  TECHNICAL VALIDATION (Skills & Roles)
 
   const techKeywords = [
     "node",
@@ -96,10 +89,9 @@ export const handleIncomingJob = async (payload: IncomingJobPayload) => {
   const hasTech = techKeywords.some((k) => normalizedText.includes(k));
   const hasRole = roleKeywords.some((k) => normalizedText.includes(k));
 
-  // If it doesn't mention a dev tech AND a dev role, skip it (filters out spam or non-tech jobs)
   if (!hasTech || !hasRole) {
     console.log(
-      `⏭️ Job ${messageId} ignored: Not a relevant software development post.`,
+      `Job ${messageId} ignored: Not a relevant software development post.`,
     );
     return;
   }
