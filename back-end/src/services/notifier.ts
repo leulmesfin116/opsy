@@ -66,37 +66,7 @@ export const handleIncomingJob = async (payload: IncomingJobPayload) => {
     return;
   }
 
-  const techKeywords = [
-    "node",
-    "javascript",
-    "typescript",
-    "go",
-    "golang",
-    "postgres",
-    "backend",
-    "fullstack",
-    "react",
-  ];
-  const roleKeywords = [
-    "developer",
-    "engineer",
-    "intern",
-    "junior",
-    "senior",
-    "dev",
-  ];
-
-  const hasTech = techKeywords.some((k) => normalizedText.includes(k));
-  const hasRole = roleKeywords.some((k) => normalizedText.includes(k));
-
-  if (!hasTech || !hasRole) {
-    console.log(
-      `Job ${messageId} ignored: Not a relevant software development post.`,
-    );
-    return;
-  }
-
   console.log(
-    `Valid Software Job Found! Workplace Categories: ${matchedWorkplaces.join(", ")}`,
+    `Valid Job Found! Workplace Categories: ${matchedWorkplaces.join(", ")}`,
   );
 };
