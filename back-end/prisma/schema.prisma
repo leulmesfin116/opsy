@@ -10,7 +10,20 @@ generator client {
 
 datasource db {
   provider = "postgresql"
+  url      = env("DATABASE_URL")
 }
- model telegramchannel{
-  id   String  @id @default(uuid)
- }
+
+model telegramchannel {
+  id   String  @id @default(uuid())
+}
+
+model user_preferences {
+  id                      String   @id @default(uuid())
+  user_id                 String   @unique
+  username                String?
+  career_preference       String?
+  work_preference         String?
+  job_location_preference String?
+  keywords                String?
+  updated_at              DateTime @default(now()) @updatedAt
+}
