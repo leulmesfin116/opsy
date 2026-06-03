@@ -27,6 +27,10 @@ export const preference = async (req: Request, res: Response) => {
     };
 
     // Assuming the table is named "user_preferences" and "user_id" is a unique key
+    const { data, error } = await supabase
+      .from("user_preferences")
+      .upsert(payload, { onConflict: "user_id" })
+      .select();
 
     if (error) {
       console.error("Supabase error:", error);
