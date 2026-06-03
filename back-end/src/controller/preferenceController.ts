@@ -3,13 +3,13 @@ import { supabase } from "../utils/supabase";
 
 export const preference = async (req: Request, res: Response) => {
   try {
-    const { 
-      userId, 
-      username, 
-      careerPreference, 
-      workPreference, 
-      jobLocationPreference, 
-      keywords 
+    const {
+      userId,
+      username,
+      careerPreference,
+      workPreference,
+      jobLocationPreference,
+      keywords,
     } = req.body;
 
     if (!userId) {
@@ -23,21 +23,24 @@ export const preference = async (req: Request, res: Response) => {
       work_preference: workPreference || null,
       job_location_preference: jobLocationPreference || null,
       keywords: keywords || null,
-      updated_at: new Date().toISOString()
+      updated_at: new Date().toISOString(),
     };
 
     // Assuming the table is named "user_preferences" and "user_id" is a unique key
-    const { data, error } = await supabase
-      .from("user_preferences")
-      .upsert(payload, { onConflict: 'user_id' })
-      .select();
 
     if (error) {
       console.error("Supabase error:", error);
-      return res.status(500).json({ message: "Failed to save user preferences", error: error.message });
+      return res
+        .status(500)
+        .json({
+          message: "Failed to save user preferences",
+          error: error.message,
+        });
     }
 
-    return res.status(200).json({ message: "Preferences saved successfully", data });
+    return res
+      .status(200)
+      .json({ message: "Preferences saved successfully", data });
   } catch (error) {
     console.error("Server error:", error);
     return res.status(500).json({ message: "Something went wrong" });
