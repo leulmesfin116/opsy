@@ -26,7 +26,7 @@ export const preference = async (req: Request, res: Response) => {
       updated_at: new Date().toISOString(),
     };
 
-    // Assuming the table is named "user_preferences" and "user_id" is a unique key
+    // registering a user
     const { data, error } = await supabase
       .from("user_preferences")
       .upsert(payload, { onConflict: "user_id" })
@@ -34,12 +34,10 @@ export const preference = async (req: Request, res: Response) => {
 
     if (error) {
       console.error("Supabase error:", error);
-      return res
-        .status(500)
-        .json({
-          message: "Failed to save user preferences",
-          error: error.message,
-        });
+      return res.status(500).json({
+        message: "Failed to save user preferences",
+        error: error.message,
+      });
     }
 
     return res
