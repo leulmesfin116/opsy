@@ -12,7 +12,14 @@ const stringSession = new StringSession(""); // fill this later with the value f
     connectionRetries: 5,
   });
   await client.start({
-    phoneNumber: async () => await input.text("Please enter your number: "),
+    phoneNumber: async () => {
+      let num = await input.text("Please enter your number (after +251): +251 ");
+      num = num.trim();
+      if (num.startsWith("+251")) return num;
+      if (num.startsWith("251")) return "+" + num;
+      if (num.startsWith("0")) num = num.substring(1);
+      return "+251" + num;
+    },
     password: async () => await input.text("Please enter your password: "),
     phoneCode: async () =>
       await input.text("Please enter the code you received: "),
