@@ -1,4 +1,7 @@
+import { useState } from 'react';
+
 function Career({ onBack }: { onBack?: () => void }) {
+  const [profession, setProfession] = useState("");
   return (
     <div className="relative flex flex-col items-center justify-center text-center mt-16 px-4">
       {onBack && (
@@ -21,7 +24,8 @@ function Career({ onBack }: { onBack?: () => void }) {
       <div className="mt-8 w-full max-w-xs sm:max-w-sm md:max-w-md mx-auto">
         <label className="block text-gray-700 text-left text-sm font-bold mb-2">What is your profession?</label>
         <select 
-          defaultValue=""
+          value={profession}
+          onChange={(e) => setProfession(e.target.value)}
           className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-amber-500 focus:border-transparent transition-all shadow-sm text-lg sm:text-base bg-white"
         >
           <option value="" disabled>Select your profession</option>
@@ -35,7 +39,16 @@ function Career({ onBack }: { onBack?: () => void }) {
           <option value="Full Stack Developer">Full Stack Developer</option>
           <option value="Marketing Manager">Marketing Manager</option>
           <option value="Social Media Manager">Social Media Manager</option>
+          <option value="Other">Other (Please specify)</option>
         </select>
+        
+        {profession === "Other" && (
+          <input 
+            type="text"
+            placeholder="Type your profession"
+            className="w-full mt-4 px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-amber-500 focus:border-transparent transition-all shadow-sm text-lg sm:text-base bg-white"
+          />
+        )}
         <button 
           className="w-full mt-4 bg-amber-500 hover:bg-amber-600 text-white font-bold py-3 px-4 rounded-lg transition-colors shadow-lg text-lg sm:text-base"
         >
