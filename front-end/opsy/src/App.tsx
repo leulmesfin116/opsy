@@ -8,7 +8,7 @@ function App() {
   const [isConfirmed, setIsConfirmed] = useState(false);
 
   if (isConfirmed) {
-    return <Career />;
+    return <Career onBack={() => setIsConfirmed(false)} />;
   }
 
   if (phoneNumber) {

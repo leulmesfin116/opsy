@@ -1,6 +1,17 @@
-function Career() {
+function Career({ onBack }: { onBack?: () => void }) {
   return (
-    <div className="flex flex-col items-center justify-center text-center mt-16 px-4">
+    <div className="relative flex flex-col items-center justify-center text-center mt-16 px-4">
+      {onBack && (
+        <button 
+          onClick={onBack}
+          className="absolute -top-12 sm:-top-8 md:top-0 left-4 md:left-8 flex items-center text-gray-500 hover:text-amber-500 transition-colors font-bold text-lg"
+        >
+          <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+            <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
+          </svg>
+          
+        </button>
+      )}
       <h1 className="text-amber-500 text-6xl md:text-8xl lg:text-9xl font-serif mb-4">
         opsy
       </h1>
