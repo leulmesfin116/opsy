@@ -70,3 +70,4 @@ export const handleIncomingJob = async (payload: IncomingJobPayload) => {
     `Valid Job Found! Workplace Categories: ${matchedWorkplaces.join(", ")}`,
   );
 };
+

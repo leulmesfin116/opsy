@@ -27,7 +27,7 @@ export const preference = async (req: Request, res: Response) => {
     };
 
     // registering a user
-    
+
     const { data, error } = await supabase
       .from("user_preferences")
       .upsert(payload, { onConflict: "user_id" })
@@ -48,4 +48,9 @@ export const preference = async (req: Request, res: Response) => {
     console.error("Server error:", error);
     return res.status(500).json({ message: "Something went wrong" });
   }
+  async function getjob(userProfession:string , preferedLocation:string){
+    let query= await supabase.from("")
+
+  }
 };
+
