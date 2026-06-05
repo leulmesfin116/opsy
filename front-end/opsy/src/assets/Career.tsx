@@ -2,6 +2,7 @@ import { useState } from 'react';
 
 function Career({ onBack }: { onBack?: () => void }) {
   const [profession, setProfession] = useState("");
+  const [workLocation, setWorkLocation] = useState("");
   return (
     <div className="relative flex flex-col items-center justify-center text-center mt-16 px-4">
       {onBack && (
@@ -49,8 +50,24 @@ function Career({ onBack }: { onBack?: () => void }) {
             className="w-full mt-4 px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-amber-500 focus:border-transparent transition-all shadow-sm text-lg sm:text-base bg-white"
           />
         )}
+
+        <div className="mt-4 text-left">
+          <label className="block text-gray-700 text-sm font-bold mb-2">Work Location</label>
+          <select 
+            value={workLocation}
+            onChange={(e) => setWorkLocation(e.target.value)}
+            className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-amber-500 focus:border-transparent transition-all shadow-sm text-lg sm:text-base bg-white"
+          >
+            <option value="" disabled>Select work location</option>
+            <option value="Remote">Remote</option>
+            <option value="Onsite">Onsite</option>
+            <option value="Hybrid">Hybrid</option>
+            <option value="All">All</option>
+          </select>
+        </div>
+
         <button 
-          className="w-full mt-4 bg-amber-500 hover:bg-amber-600 text-white font-bold py-3 px-4 rounded-lg transition-colors shadow-lg text-lg sm:text-base"
+          className="w-full mt-6 bg-amber-500 hover:bg-amber-600 text-white font-bold py-3 px-4 rounded-lg transition-colors shadow-lg text-lg sm:text-base"
         >
           Continue
         </button>

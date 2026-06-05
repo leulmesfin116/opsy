@@ -27,6 +27,7 @@ export const preference = async (req: Request, res: Response) => {
     };
 
     // registering a user
+    
     const { data, error } = await supabase
       .from("user_preferences")
       .upsert(payload, { onConflict: "user_id" })
