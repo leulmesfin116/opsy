@@ -20,11 +20,22 @@ function Career({ onBack }: { onBack?: () => void }) {
       </h2>
       <div className="mt-8 w-full max-w-xs sm:max-w-sm md:max-w-md mx-auto">
         <label className="block text-gray-700 text-left text-sm font-bold mb-2">What is your profession?</label>
-        <input 
-          type="text"
-          placeholder="e.g. Software Engineer"
-          className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-amber-500 focus:border-transparent transition-all shadow-sm text-lg sm:text-base"
-        />
+        <select 
+          defaultValue=""
+          className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-amber-500 focus:border-transparent transition-all shadow-sm text-lg sm:text-base bg-white"
+        >
+          <option value="" disabled>Select your profession</option>
+          <option value="Software Engineer">Software Engineer</option>
+          <option value="Mechanical Engineer">Mechanical Engineer</option>
+          <option value="Civil Engineer">Civil Engineer</option>
+          <option value="Sales">Sales</option>
+          <option value="Accountant">Accountant</option>
+          <option value="Video Editor">Video Editor</option>
+          <option value="Graphic Designer">Graphic Designer</option>
+          <option value="Full Stack Developer">Full Stack Developer</option>
+          <option value="Marketing Manager">Marketing Manager</option>
+          <option value="Social Media Manager">Social Media Manager</option>
+        </select>
         <button 
           className="w-full mt-4 bg-amber-500 hover:bg-amber-600 text-white font-bold py-3 px-4 rounded-lg transition-colors shadow-lg text-lg sm:text-base"
         >
